@@ -76,7 +76,7 @@ app.use((err, req, res, next) => {
     res.status(err.statusCode || 500).render('error', { err });
 });
 
-app.app.use("*", (req, res) => {
+app.use("*", (req, res) => {
     throw new ExpressError("Page Not Found", 404);
 });
 const PORT = process.env.PORT;
