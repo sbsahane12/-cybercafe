@@ -35,7 +35,7 @@ app.use(methodOverride('_method'));
 app.use(cors());
 
 app.use(session({
-    secret: 'mysecretkeyiskeptsecretfrommeandotherworld',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
