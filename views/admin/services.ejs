@@ -1,0 +1,211 @@
+<% layout("/layouts/adminboilerplate") %>
+<style>
+    /* Custom CSS */
+.bg-zinc-100 {
+    background-color: #f0f4f8;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.container {
+    width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.mx-auto {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.bg-blue-500 {
+    background-color: #3b82f6;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.rounded-md {
+    border-radius: 0.375rem;
+}
+
+.mr-2 {
+    margin-right: 0.5rem;
+}
+
+.border {
+    border-width: 1px;
+}
+
+.border-zinc-300 {
+    border-color: #d1d5db;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.table {
+    display: table;
+    width: 100%;
+}
+
+.thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.bg-zinc-50 {
+    background-color: #f0f4f8;
+}
+
+.tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+.th {
+    padding: 1rem;
+    text-align: left;
+}
+
+.tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.border-b {
+    border-bottom-width: 1px;
+}
+
+.td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.bg-red-500 {
+    background-color: #ef4444;
+}
+
+.px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.text-zinc-500 {
+    color: #6b7280;
+}
+
+</style>
+    <div class="container mx-auto">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-2xl font-bold">User List</h1>
+            <div class="flex items-center">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">Add New +</button>
+                <input type="search" placeholder="Search..." class="px-4 py-2 rounded-md border border-zinc-300">
+            </div>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-zinc-50">
+                    <tr>
+                        <th class="p-4 text-left"><input type="checkbox"></th>
+                        <th class="p-4 text-left">Image</th>
+                        <th class="p-4 text-left">Name</th>
+                        <th class="p-4 text-left">Documents</th>
+                        <th class="p-4 text-left">Amount</th>
+                        <th class="p-4 text-left">Status</th>
+                        <th class="p-4 text-left">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for( let i = 0; i < services.length; i++ ) { %>
+                        <tr class="border-b">
+                            <td class="p-4"><input type="checkbox"></td>
+                            <td class="p-4"><img src="https://placehold.co/40x40" alt="user" class="rounded-full"></td>
+                            <td class="p-4">Arlene McCoy</td>
+                            <td class="p-4">August 2, 2013</td>
+                            <td class="p-4">205.555.0100</td>
+                            <td class="p-4">Active</td>
+                            <td class="p-4"><a href="/admin/services/<%= services[i]._id %>/edit"" class="bg-red-500 text-white px-2 py-1 rounded-full">Edit</a></td>
+                           
+                 <form action="/admin/services/<%= services[i]._id %>?_method=delete" method="post">
+                    <td class="p-4"><button class="bg-red-500 text-white px-2 py-1 rounded-full">Delete</button></td>
+                </form>
+
+                        </tr>
+                    <% } %>
+                 
+                </tbody>
+            </table>
+        </div>
+    </div>
+
