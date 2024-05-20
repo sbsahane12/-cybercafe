@@ -15,6 +15,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/User');
 const connectFlash = require('connect-flash');
 const ensureRole = require('./middleware/roleMiddleware');
+const ExpressError = require('./utils/ExpressError');
 // const isLoggedIn = require('./middleware/isLoggedInMiddleware');
 async function main() {
     await mongoose.connect(process.env.DB_URL);
@@ -75,6 +76,9 @@ app.use((err, req, res, next) => {
     res.status(err.statusCode || 500).render('error', { err });
 });
 
+app.use("*", (req, res) => {
+    throw new ExpressError("Page Not Found", 404);
+});
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
