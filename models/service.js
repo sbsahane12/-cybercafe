@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ServiceApply = require("./ApplyServices");
+const ServiceApply = require("./applyservice");
 
 const serviceSchema = new Schema({
   title: String,

@@ -1,16 +1,16 @@
 // controllers/userController.js
 
-const User = require('../models/User');
+const User = require('../models/user');
 const cloudinary = require("../utils/cloudinary");
 const fs = require("fs").promises;
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const { registerSchema, emailSchema, passwordResetSchema, loginSchema } = require('../validation/userValidation');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../helpers/mailer');
-const UserForget = require('../models/UserForget');
+const UserForget = require('../models/userforget');
 const randomstring = require('randomstring');
 const ExpressError = require('../utils/ExpressError');
-const ServiceApply = require('../models/ApplyServices');
+const ServiceApply = require('../models/applyservice');
 const { Console } = require('console');
 exports.signupForm = (req, res) => {
     res.render('user/signup');

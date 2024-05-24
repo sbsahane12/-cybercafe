@@ -1,8 +1,8 @@
-const Service = require("../models/Services");
+const Service = require("../models/service");
 const ExpressError = require("../utils/ExpressError");
 const cloudinary = require("../utils/cloudinary");
-const ServiceApply = require("../models/ApplyServices");
-const User = require("../models/User");
+const ServiceApply = require("../models/applyservice");
+const User = require("../models/user");
 const fs = require("fs").promises;
 
 
