@@ -62,12 +62,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, res) => {
-    res.render('home');
-});
-
-
 app.use('/', require('./routes/serviceRoute'));
+
 app.use('/admin', ensureRole('admin'), require('./routes/adminServicesRoute'));
 // app.use('/admin', require('./routes/adminRoute'));
 app.use('/user', require('./routes/userRoute'));

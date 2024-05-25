@@ -8,7 +8,7 @@ const asyncHandler = require("../utils/asyncHandler");
 exports.getAllServices = async (req, res) => {
   try {
     let services = await Service.find({});
-    res.render("cyberCafe/Services", { services });
+    res.render("cybercafe/Services", { services });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -18,7 +18,7 @@ exports.getAllServices = async (req, res) => {
 exports.getSingleService = async (req, res) => {
   try {
     let service = await Service.findById(req.params.id);
-    res.render("cyberCafe/SingleService", { service });
+    res.render("cybercafe/SingleService", { service });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -29,7 +29,7 @@ exports.getApplyForm = async (req, res) => {
   try {
     let service = await Service.findById(req.params.id);
     console.log(req.params.id);
-    res.render("cyberCafe/Apply", { service });
+    res.render("cybercafe/Apply", { service });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
