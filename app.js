@@ -12,7 +12,7 @@ const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('./models/user_1');
+const User = require('./models/user');
 const connectFlash = require('connect-flash');
 const ensureRole = require('./middleware/roleMiddleware');
 const ExpressError = require('./utils/ExpressError');
@@ -67,7 +67,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.use('/services', require('./routes/serviceRoute'));
+app.use('/', require('./routes/serviceRoute'));
 app.use('/admin', ensureRole('admin'), require('./routes/adminServicesRoute'));
 // app.use('/admin', require('./routes/adminRoute'));
 app.use('/user', require('./routes/userRoute'));
@@ -79,7 +79,7 @@ app.use((err, req, res, next) => {
 app.use("*", (req, res) => {
     throw new ExpressError("Page Not Found", 404);
 });
-const PORT = process.env.PORT;
+const PORT = 8000 || process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
