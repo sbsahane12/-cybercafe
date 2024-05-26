@@ -3,10 +3,13 @@ const router = express.Router();
 const asyncHandler = require("../utils/asyncHandler");
 const upload = require("../utils/multer");
 const serviceController = require("../controllers/serviceAdminController");
+const serviceAdminController = require("../controllers/serviceAdminController");
 const { IsValidService } = require("../middleware/serviceMiddleware");
 
 // Routes
-router.get("/profile", asyncHandler(serviceController.getProfile));
+
+router.get("/profile/:id", asyncHandler(serviceAdminController.getProfile));
+
 router.get('/services', asyncHandler(serviceController.getAllServices));
 router.get("/services/new", asyncHandler(serviceController.getNewServiceForm)); // New service creation route
 router.post("/services", upload.single("image"), IsValidService, asyncHandler(serviceController.createService));

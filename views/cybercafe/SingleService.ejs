@@ -82,25 +82,18 @@
     transform: scale(1.05);
   }
 
-  /* Responsive Media Queries */
-  @media screen and (min-width: 640px) {
-    .md\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media screen and (min-width: 768px) {
-    .max-w-4xl {
-      max-width: 75rem;
-    }
+  .image{
+    width: 600px;
+    height: 350px;
+    border-radius: 50px;
   }
 </style>
-<body class="bg-white dark:bg-zinc-800">
-  <div class="max-w-4xl mx-auto py-12">
-    <div class="grid md:grid-cols-2 gap-8 items-center">
+<body class="bg-white dark:bg-zinc-800 ">
+  <div class="max-w-4xl mx-auto py-12 ">
+    <div class="grid md:grid-cols-2 gap-8 items-center singleservise">
       <div>
-        <h1 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4"><%=service.title%></h1>
-        <img src="<%=service.image%>" alt="Red Headphones" class="w-full">
+        <h1 class="text-2xl font-semibold text-zinc-900 dark:text-white mb-4" style="text-decoration: underline;"><%=service.title%></h1>
+        <img src="<%=service.image%>" alt="Red Headphones" class="image">
       </div>
       <div>
         <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white">Service Description</h2>

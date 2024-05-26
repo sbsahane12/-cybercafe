@@ -8,8 +8,21 @@ const fs = require("fs").promises;
 
 
 exports.getProfile = async (req, res) => {
-  res.render('admin/profile.ejs');
+console.log(req.params.id);
+  const user = await User.findById(req.params.id);
+console.log("User",user)
+if (!user) {
+    req.flash('error', 'User not found');
+    res.redirect('/user/login');
+    return;
+}
+const applications = await ServiceApply.find({ userId: user._id }).populate('serviceId');
+
+ console.log("Applications",applications);
+res.render('admin/profile', { user, applications });
+
 };
+
 
 exports.getAllServices = async (req, res) => {
   try {
@@ -58,7 +71,7 @@ exports.createService = async (req, res, next) => {
 exports.getSingleService = async (req, res) => {
   try {
     let service = await Service.findById(req.params.id);
-    res.render("cyberCafe/SingleService", { service });
+    res.render("cybercafe/SingleService", { service });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -68,7 +81,7 @@ exports.getSingleService = async (req, res) => {
 exports.getEditServiceForm = async (req, res) => {
   try {
     let service = await Service.findById(req.params.id);
-    res.render("cyberCafe/EditService", { service });
+    res.render("cybercafe/EditService", { service });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");

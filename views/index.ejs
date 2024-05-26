@@ -1,0 +1,166 @@
+
+
+<% layout("/layouts/boilerplate") %>
+<style>
+    /* Hero Section */
+
+    .hero-section h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+    }
+
+    .hero-section ul {
+        list-style-type: none;
+        padding: 0;
+        font-size: 1.2em;
+    }
+
+    .hero-section li {
+        margin-bottom: 10px;
+    }
+
+    /* About Us Section */
+    .about-section {
+        padding: 50px 0;
+    }
+
+    .about-section h2 {
+        color: #f37a05;
+        margin-bottom: 30px;
+    }
+
+    /* Services Section */
+    .services-section {
+        padding: 50px 0;
+    }
+
+    .service {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .service img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .service h4 {
+        font-size: 1.5em;
+        color: #f37a05;
+        margin-bottom: 10px;
+    }
+
+    /* Contact Section */
+    .contact-section {
+        background-color: #f37a05;
+        color: white;
+        padding: 50px 0;
+        text-align: center;
+    }
+
+    .contact-section h2,
+    .contact-section p {
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: white;
+        color: #f37a05;
+        border: 1px solid #f37a05;
+    }
+
+    .btn-secondary:hover {
+        background-color: #f37a05;
+        color: white;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2em;
+        }
+
+        .hero-section ul {
+            font-size: 1em;
+        }
+
+        .service {
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-section h1 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
+<body class="bg-light">
+    <!-- Marquee Tag for Welcome Message -->
+    <marquee behavior="scroll" direction="left" scrollamount="8">
+        <h1 style="color: #f37a05;">Welcome to Your Own CyberCafe!</h1>
+    </marquee>
+
+    <div class="hero-section">
+        <div class="container">
+            <h1 style="text-decoration: underline; color: #f37a05;">Welcome to Online Document Services</h1>
+            <ul class="list-unstyled">
+                <li >Your one-stop solution for all your document needs, providing 20+ online document services across India.</li>
+                <li >Please explore our services to get started.</li>
+                <li>India's first online document service platform</li>
+            </ul>
+            <a href="/services" class="btn btn-secondary btn-lg">Explore Our Services</a>
+    
+    
+    <!-- About Us Section -->
+    <div class="about-section">
+        <div class="container">
+            <h1 style="text-decoration: underline; color: #f37a05;" class="text-center">About Us</h1>
+            <p>We offer a wide range of online document services to help you manage your paperwork effortlessly. From birth certificates to property documents, we have got you covered. Our mission is to provide fast, reliable, and secure document services to individuals and businesses all over India.</p>
+            <p>At Document CyberCafe, our journey began with a simple yet powerful vision: to revolutionize the way individuals and businesses access essential document services. Founded in 2024, we embarked on a mission to streamline the cumbersome process of obtaining vital documents, empowering our clients to navigate bureaucratic hurdles with ease.</p>
+            <p>Since our inception, we have remained steadfast in our commitment to excellence. We pride ourselves on delivering unparalleled customer service, ensuring every interaction with our platform is seamless and satisfactory.</p>
+          
+     
+            <h1 style="color: #f37a05" class="text-center mb-3">Our Services </h1>
+            <hr>
+            <div class="row">
+                <div class="col-md-4 service">
+                    <img src="https://img.freepik.com/free-psd/birth-announcement-landing-page-template_23-2151233503.jpg?t=st=1716738729~exp=1716742329~hmac=ddefcf0fea05069fda4e13840ee1d362b99fe0dd39e7b96f736adb3489d65b8c&w=1380" alt="Service Icon">
+                    <h4>Birth Certificates</h4>
+                    <p>Request your birth certificate easily and quickly with our online service.</p>
+                </div>
+                <div class="col-md-4 service">
+                    <img src="https://img.freepik.com/free-vector/plain-credit-card-concept-illustration_114360-117.jpg?1&w=740&t=st=1716738357~exp=1716738957~hmac=cf0bc3ad4041b937089c474f4607b86ad22f07872af33b4b528c84721bcedc31" alt="Service Icon">
+                    <h4>Pan Card Documents</h4>
+                    <p>Get your Pan card documents sorted without any hassle.</p>
+                </div>
+                <div class="col-md-4 service">
+                    <img src="https://img.freepik.com/premium-vector/invitation-card-wedding_822782-254.jpg?w=360" alt="Service Icon">
+                    <h4>Marriage Certificates</h4>
+                    <p>Apply for your marriage certificate online with our user-friendly service.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 service">
+                    <img src="https://img.freepik.com/free-photo/travel-again-concept-assortment_23-2149064617.jpg?t=st=1716738665~exp=1716742265~hmac=5f38da5d40933115ff1e4ecc6ec458333fa126f7ff3a7ae5da2b0de787eda3bc&w=360" alt="Service Icon">
+                    <h4>Passport Services</h4>
+                    <p>Get assistance with passport applications and renewals.</p>
+                </div>
+                <div class="col-md-4 service">
+                    <img src="https://img.freepik.com/free-vector/hand-drawn-driving-license-template_23-2150020441.jpg?w=740&t=st=1716738592~exp=1716739192~hmac=3a68f62a5e69a92c81ad97521148d20e7000a2358a67ecfd1cc80af4dfd4350b" alt="Service Icon">
+                    <h4>Driving License</h4>
+                    <p>Apply for a new driving license or renew your existing one.</p>
+                </div>
+                <div class="col-md-4 service">
+                    <img src="https://img.freepik.com/free-vector/flat-certificate-template_52683-61539.jpg?w=1060&t=st=1716738437~exp=1716739037~hmac=c70ac520578735fe7c00a30a4242263ebd5636bdb2b3fcc7afc8ab4cb4d0a3ae" alt="Service Icon">
+                    <h4>Educational Certificates</h4>
+                    <p>Obtain your educational certificates from the comfort of your home.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</body>

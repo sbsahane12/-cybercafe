@@ -19,7 +19,6 @@ module.exports.registerSchema = Joi.object({
         'string.empty': 'Password is required',
     }),
     image: Joi.any(),
-    role: Joi.string().valid('admin', 'normal').default('normal'),
 });
 
 module.exports.emailSchema = Joi.object({
@@ -36,5 +35,5 @@ module.exports.loginSchema = Joi.object({
     username: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
-    role: Joi.string().required(),
+    role: Joi.string().valid('admin', 'normal').required()
 });

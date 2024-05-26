@@ -90,7 +90,7 @@ exports.login = (req, res, next) => {
             }
             req.flash('success', 'Logged in successfully');
             if (user.role === 'admin') {
-                return res.redirect('/admin/profile');
+                return res.redirect('/admin/profile/'+user._id);
             } else {
                 return res.redirect('/services');
             }

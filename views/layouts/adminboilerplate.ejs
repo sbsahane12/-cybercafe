@@ -14,32 +14,12 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <%- include("../includes/sidebar.ejs") %>
-    <div class="main">
-        <nav class="navbar navbar-expand px-3 border-bottom">
-            <!-- Button for sidebar toggle -->
-            <button class="btn" type="button" data-bs-theme="dark">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-        <main class="content px-3 py-2">
-            <div class="container-fluid">
-                <div class="mb-3">
-                    <h3>Bootstrap Sidebar Tutorial</h3>
-                    <div class="pages">
-                        <%- body  %>
-                    </div>
-                    
-                </div>
-            </div>
-           
-        </main>
-        
-    </div>
-    
-    </div>
+    <%- include("../includes/header1.ejs") %>
+   
+        <%- include("../includes/flash.ejs")  %>
+        <%- body %>
 
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>

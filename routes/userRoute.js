@@ -56,7 +56,7 @@ router.put('/profile/:id', upload.single('avatar'), asyncHandler(authController.
 router.get("/application/:id", asyncHandler(authController.applicationForm));
 router.put("/application/:id",upload.array('new_documents'), asyncHandler(authController.updateApplicationForm));
   
-router.post('/signup',upload.single('avatar') ,asyncHandler(authController.signup));
+router.post('/signup',upload.single('avatar') ,IsValidRegister, asyncHandler(authController.signup));
 router.get('/signup', asyncHandler(authController.signupForm));
 
 router.get('/login', asyncHandler(authController.loginForm));
@@ -69,7 +69,7 @@ router.get('/forgetPassword', asyncHandler(authController.forgetPasswordForm));
 router.post('/forgetPassword', asyncHandler(authController.forgetPassword));
 
 router.get('/resetPassword', asyncHandler(authController.resetPasswordForm));
-router.post('/resetPassword', asyncHandler(authController.resetPassword));
+router.post('/resetPassword',IsValidPasswordReset, asyncHandler(authController.resetPassword));
 
 
 module.exports = router;

@@ -44,7 +44,37 @@ const sendPasswordResetEmail = (email, token) => {
     });
 };
 
+const applicationRejectEmail = (email) => {
+    const mailOptions = {
+        from: process.env.SMTP_MAIL,
+        to: email,
+        subject: 'Application Rejection',
+        html: `<p>Your application has been rejected . please contact us <a href="mailto:sbsahane23@gmail.com">click here</a>.</p>`
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.error(err);
+        else console.log(`Email sent: ${info.response}`);
+    });
+};
+
+const applicationCompletedEmail = (email) => {
+    const mailOptions = {
+        from: process.env.SMTP_MAIL,
+        to: email,
+        subject: 'Application Completed',
+        html: `<p>Your application has been completed .If You have any query please contact us <a href="mailto:sbsahane23@gmail.com">click here</a>.</p>`
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.error(err);
+        else console.log(`Email sent: ${info.response}`);
+    });
+};
+
 module.exports = {
     sendVerificationEmail,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    applicationRejectEmail,
+    applicationCompletedEmail,
 };
