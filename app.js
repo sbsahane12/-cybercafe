@@ -64,9 +64,10 @@ app.use((req, res, next) => {
 
 app.use('/', require('./routes/index'));
 app.use('/', require('./routes/serviceRoute')); //normal routes
+app.use('/user', require('./routes/userRoute')); //normal routes
 app.use('/admin', require('./routes/adminServicesRoute')); //admin routes
 app.use('/admin', require('./routes/adminUserRoute'));  //admin routes
-app.use('/user', require('./routes/userRoute')); //normal routes
+
 
 app.use((err, req, res, next) => {
     res.status(err.statusCode || 500).render('error', { err });
