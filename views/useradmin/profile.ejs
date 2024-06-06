@@ -291,7 +291,7 @@
        
       </div>
       <p class="avatar-div">User Name: <%= user.username %></p>
-      <form action="/user/profile/<%= user._id %>?_method=PUT" method="post" enctype="multipart/form-data">
+      <form action="/admin/profile/<%= user._id %>?_method=PUT" method="post" enctype="multipart/form-data">
         <div class="grid grid-cols-2 gap-6 mb-6">
        
             <div>
@@ -305,6 +305,7 @@
                   value="<%= user.username %>"
                   class="form-control border-orange-500 rounded"
                   required
+                  readonly
                 />
               </div>    
 
@@ -319,7 +320,6 @@
                   value="<%= user.email %>"
                   class="form-control border-orange-500 rounded"
                   required
-                  disabled
                 />
               </div> 
        
@@ -334,7 +334,6 @@
                   value="<%= user.role %>"
                   class="form-control border-orange-500 rounded"
                   required
-                  disabled
                 />
               </div> 
               <div>
@@ -363,6 +362,7 @@
                   value="<%= user.mobile %>"
                   class="form-control border-orange-500 rounded"
                   required
+                  readonly
                 />
               </div> 
 
@@ -378,6 +378,36 @@
         <button class="btn">Save Changes</button>
       </form>
 
+      <div class="service-section">
+        <h4>Service Applications</h4>
+        <% if (applications.length > 0) { %>
+        <table class="service-table">
+          <thead>
+            <tr>
+              <th>Service Title</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Update</th>
+            </tr>
+
+          </thead>
+          <tbody>
+            <% applications.forEach(application => { %>
+            <tr>
+              <td><%= application.serviceId.title %></td>
+              <td><%= application.mail %></td>
+              <td><%= application.contact %></td>
+                <td>
+                <a href="/user/application/<%= application._id %>">Update</a>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } else { %>
+        <p>No service applications found.</p>
+        <% } %>
+      </div>
     </div>
   </div>
 </body>

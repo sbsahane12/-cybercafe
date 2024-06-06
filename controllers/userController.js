@@ -1,5 +1,3 @@
-// controllers/userController.js
-
 const User = require('../models/user');
 const cloudinary = require("../utils/cloudinary");
 const fs = require("fs").promises;
@@ -12,6 +10,7 @@ const randomstring = require('randomstring');
 const ExpressError = require('../utils/ExpressError');
 const ServiceApply = require('../models/applyservice');
 const { Console } = require('console');
+
 exports.signupForm = (req, res) => {
     res.render('user/signup');
 };
@@ -61,40 +60,34 @@ exports.loginForm = (req, res) => {
 
 exports.login = (req, res, next) => {
     passport.authenticate('local', async (err, user, info) => {
-        if (err) {
-            console.error(err);
-            req.flash('error', 'An error occurred');
-            return res.redirect('/user/login');
-        }
-        if (!user) {
-            req.flash('error', info.message);
-            return res.redirect('/user/login');
-        }
-
-        // Check if user is verified
-        if (!user.is_verified) {
-            const verificationToken = randomstring.generate();
-            await UserForget.create({ user_id: user._id, token: verificationToken });
-            await sendVerificationEmail(user.email, verificationToken);
-
-            req.flash('error', 'Please verify your email before logging in. A verification email has been sent.');
-            return res.redirect('/user/login');
-        }
-
-        // User is verified, proceed with login
-        req.login(user, (err) => {
+        try {
             if (err) {
-                console.error(err);
-                req.flash('error', 'An error occurred');
-                return res.redirect('/user/login');
+                throw new ExpressError('An error occurred', 500);
             }
-            req.flash('success', 'Logged in successfully');
-            if (user.role === 'admin') {
-                return res.redirect('/admin/profile/'+user._id);
-            } else {
-                return res.redirect('/services');
+            if (!user) {
+                throw new ExpressError('Invalid email or password', 400);
             }
-        });
+
+            if (!user.is_verified) {
+                const verificationToken = randomstring.generate();
+                await UserForget.create({ user_id: user._id, token: verificationToken });
+                await sendVerificationEmail(user.email, verificationToken);
+
+                throw new ExpressError('Please verify your email before logging in. A verification email has been sent.', 400);
+            }
+
+            req.login(user, (err) => {
+                if (err) {
+                    throw new ExpressError('An error occurred', 500);
+                }
+                req.flash('success', 'Logged in successfully');
+                res.redirect(user.role === 'admin' ? `/admin/services` : '/services');
+            });
+        } catch (err) {
+            console.error(err);
+            req.flash('error', err.message);
+            res.redirect('/user/login');
+        }
     })(req, res, next);
 };
 
@@ -211,133 +204,119 @@ exports.resetPassword = async (req, res) => {
 };
 
 exports.profile = async (req, res) => {
+    try {
+        const id = req.user._id;
+        if (!id) {
+            throw new ExpressError('You must be logged in to view your profile', 401);
+        }
 
-    const id= req.user._id;
-    if(!id) {
-        req.flash('error', 'You must be logged in to view your profile');
+        const user = await User.findById(id);
+        if (!user) {
+            throw new ExpressError('User not found', 404);
+        }
+
+        const applications = await ServiceApply.find({ userId: user._id }).populate('serviceId');
+        res.render('user/profile', { user, applications });
+    } catch (err) {
+        console.error(err);
+        req.flash('error', err.message);
         res.redirect('/user/login');
-        return;
     }
-    const user = await User.findById(req.user._id);
-    console.log("User",user)
-    if (!user) {
-        req.flash('error', 'User not found');
-        res.redirect('/user/login');
-        return;
-    }
-    const applications = await ServiceApply.find({ userId: user._id }).populate('serviceId');
-
-     console.log("Applications",applications);
-    res.render('user/profile', { user, applications });
-};
-
+}; 
 
 exports.updateProfileForm = async (req, res) => {
     try {
-      const { username, mobile } = req.body;
-      const userId = req.params.id;
-  
-      console.log(req.body);
-      console.log(req.params.id);
-  
-      const user = await User.findById(userId);
-      if (!user) {
-        req.flash('error', 'User not found');
-        return res.redirect(`/user/profile/${userId}`);
-      }
-  
-      if (!username || username.length < 7) {
-        req.flash('error', 'Username must be at least 7 characters long');
-        return res.redirect(`/user/profile/${userId}`);
-      }
-  
-      if (!mobile || mobile.length !== 10) {
-        req.flash('error', 'Invalid mobile number');
-        return res.redirect(`/user/profile/${userId}`);
-      }
-  
-      console.log('inside update profile', req.file);
-  
-      // Upload new avatar if provided
-      if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path);
-        user.avatar = result.secure_url;
-  
-        // Remove the uploaded file from the server
-        await fs.unlink(req.file.path);
-      }
-  
-     
-      user.username = username;
-      user.mobile = mobile;
-  
-      await user.save();
-  
-      req.flash('success', 'Profile updated successfully');
-      res.redirect(`/user/profile/${userId}`);
-    } catch (error) {
-      console.error(error);
-      req.flash('error', 'An error occurred while updating the profile');
-      res.redirect(`/user/profile/${req.params.id}`);
-    }
-  };
-  
+        const { username, mobile } = req.body;
+        const userId = req.params.id;
 
-  exports.applicationForm = async (req, res) => {
-    try {
-      const application = await ServiceApply.findById(req.params.id);
-      res.render('user/applicationForm', {application });
-    } catch (error) {
-      console.error(error);
-      req.flash('error', 'An error occurred while fetching services');
-      res.redirect('/user/login');
-    }
-  };
-
-exports.updateApplicationForm = async (req, res) => {
-  try {
-    const application = await ServiceApply.findById(req.params.id);
-    const oldDocumentIds = application.documents.map(doc => {
-      const urlParts = doc.split('/');
-      const publicId = urlParts[urlParts.length - 1].split('.')[0];
-      return publicId;
-    });
-
-    const documents = req.files.map(file => file.path);
-    const uploadedDocuments = await Promise.all(
-      documents.map(async filePath => {
-        try {
-          const result = await cloudinary.uploader.upload(filePath);
-          // After successful upload, remove the file from the server
-          await fs.unlink(filePath);
-          return result.secure_url; // Return the Cloudinary URL of the uploaded file
-        } catch (error) {
-          console.error("Error uploading file to Cloudinary:", error);
-          throw new Error("Failed to upload file to Cloudinary");
+        console.log(req.file);
+        console.log(req.body);
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new ExpressError('User not found', 404);
         }
-      })
-    );
 
-    // Delete old documents from Cloudinary
-    await Promise.all(
-      oldDocumentIds.map(async publicId => {
-        try {
-          await cloudinary.uploader.destroy(publicId);
-        } catch (error) {
-          console.error("Error deleting file from Cloudinary:", error);
+        if (!username || username.length < 7) {
+            throw new ExpressError('Username must be at least 7 characters long', 400);
         }
-      })
-    );
 
-    // Update application with new document URLs
-    application.documents = uploadedDocuments;
-    await application.save();
+        if (!mobile || mobile.length !== 10) {
+            throw new ExpressError('Invalid mobile number', 400);
+        }
 
-    res.status(200).json({ message: 'Application updated successfully', application });
-  } catch (error) {
-    console.error("Error updating application:", error);
-    res.status(500).json({ error: 'Failed to update application' });
-  }
+        if (req.file) {
+            console.log(req.file);
+            // await cloudinary.uploader.destroy(user.avatar);
+            const result = await cloudinary.uploader.upload(req.file.path);
+            user.avatar = result.secure_url;
+            await fs.unlink(req.file.path);
+        }
+
+        user.username = username;
+        user.mobile = mobile;
+        await user.save();
+
+        req.flash('success', 'Profile updated successfully');
+        res.redirect(`/user/profile/${userId}`);
+    } catch (error) {
+        console.error(error);
+        req.flash('error', error.message);
+        res.redirect(`/user/profile/${req.params.id}`);
+    }
 };
 
+exports.applicationForm = async (req, res) => {
+    try {
+        const application = await ServiceApply.findById(req.params.id);
+        res.render('user/applicationForm', { application });
+    } catch (error) {
+        console.error(error);
+        req.flash('error', 'An error occurred while fetching services');
+        res.redirect('/user/login');
+    }
+};
 
+exports.updateApplicationForm = async (req, res) => {
+    try {
+        const application = await ServiceApply.findById(req.params.id);
+        const oldDocumentIds = application.documents.map(doc => {
+            const urlParts = doc.split('/');
+            const publicId = urlParts[urlParts.length - 1].split('.')[0];
+            return publicId;
+        });
+
+        const documents = req.files.map(file => file.path);
+        const uploadedDocuments = await Promise.all(
+            documents.map(async filePath => {
+                try {
+                    const result = await cloudinary.uploader.upload(filePath);
+                    await fs.unlink(filePath);
+                    return result.secure_url;
+                } catch (error) {
+                    console.error("Error uploading file to Cloudinary:", error);
+                    throw new ExpressError("Failed to upload file to Cloudinary", 500);
+                }
+            })
+        );
+
+        await Promise.all(
+            oldDocumentIds.map(async publicId => {
+                try {
+                    await cloudinary.uploader.destroy(publicId);
+                } catch (error) {
+                    console.error("Error deleting file from Cloudinary:", error);
+                }
+            })
+        );
+
+        application.documents = uploadedDocuments;
+        await application.save();
+
+        req.flash('success', 'Application updated successfully');
+        res.redirect('/user/profile');
+    } catch (error) {
+        console.error("Error updating application:", error);
+        req.flash('error', 'Failed to update application');
+        res.redirect('/user/profile');
+    }
+};

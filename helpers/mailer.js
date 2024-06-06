@@ -44,6 +44,22 @@ const sendPasswordResetEmail = (email, token) => {
     });
 };
 
+const adminsendPasswordResetEmail = (email, token) => {
+    const url = `http://localhost:3000/admin/resetPassword?token=${token}`;
+    const mailOptions = {
+        from: process.env.SMTP_MAIL,
+        to: email,
+        subject: 'Password Reset',
+        html: `<p>Please click <a href="${url}">here</a> to reset your password.</p>`
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.error(err);
+        else console.log(`Email sent: ${info.response}`);
+    });
+};
+
+
 const applicationRejectEmail = (email) => {
     const mailOptions = {
         from: process.env.SMTP_MAIL,
@@ -72,9 +88,40 @@ const applicationCompletedEmail = (email) => {
     });
 };
 
+const problemSeenEmail = (email) => {
+    const mailOptions = {
+        from: process.env.SMTP_MAIL,
+        to: email,
+        subject: 'Problem Seen',
+        html: `<p>Your problem has been seen .If You have any query please contact us <a href="mailto:sbsahane23@gmail.com">click here</a>.</p>`
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.error(err);    
+        else console.log(`Email sent: ${info.response}`);
+    });
+};
+
+const problemSolvedEmail = (email) => {
+    const mailOptions = {
+        from: process.env.SMTP_MAIL,
+        to: email,
+        subject: 'Problem Solved',
+        html: `<p>Your problem has been solved .If You have any query please contact us <a href="mailto:sbsahane23@gmail.com">click here</a>.</p>`
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.error(err);
+        else console.log(`Email sent: ${info.response}`);
+    });
+};
+
 module.exports = {
     sendVerificationEmail,
     sendPasswordResetEmail,
     applicationRejectEmail,
     applicationCompletedEmail,
+    adminsendPasswordResetEmail,
+    problemSeenEmail,
+    problemSolvedEmail,
 };

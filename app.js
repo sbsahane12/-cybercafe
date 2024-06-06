@@ -16,7 +16,6 @@ const User = require('./models/user');
 const connectFlash = require('connect-flash');
 const ensureRole = require('./middleware/roleMiddleware');
 const ExpressError = require('./utils/ExpressError');
-// const isLoggedIn = require('./middleware/isLoggedInMiddleware');
 async function main() {
     await mongoose.connect(process.env.DB_URL);
     console.log('MongoDB connected');
@@ -32,7 +31,7 @@ app.engine('ejs', ejsMate);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
-app.use(cors());
+
 
 app.use(session({
     secret: process.env.SECRET,
@@ -62,16 +61,32 @@ app.use((req, res, next) => {
     next();
 });
 
+
+
+app.use("/privacy",async (req, res) => {
+    res.render('privacy');
+})
+app.use('/terms',async (req, res) => {
+    res.render('terms-and-conditions');
+})
+
+
 app.use('/', require('./routes/index'));
+app.use('/', require('./routes/contactRoute'));
 app.use('/', require('./routes/serviceRoute')); //normal routes
 app.use('/user', require('./routes/userRoute')); //normal routes
+app.use('/admin', require('./routes/adminContactRoute')); //admin routes
 app.use('/admin', require('./routes/adminServicesRoute')); //admin routes
 app.use('/admin', require('./routes/adminUserRoute'));  //admin routes
 
 
+// Centralized error handling middleware
 app.use((err, req, res, next) => {
-    res.status(err.statusCode || 500).render('error', { err });
+    const { statusCode = 500, message = "Something went wrong" } = err;
+    if (!err.message) err.message = "Oh no, something went wrong!";
+    res.status(statusCode).render('error', { err });
 });
+
 
 app.use("*", (req, res) => {
     throw new ExpressError("Page Not Found", 404);

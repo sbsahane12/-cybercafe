@@ -18,6 +18,7 @@ module.exports.registerSchema = Joi.object({
         'string.min': 'Please enter a password with 6 or more characters',
         'string.empty': 'Password is required',
     }),
+    
     image: Joi.any(),
 });
 
@@ -26,6 +27,7 @@ module.exports.emailSchema = Joi.object({
 });
 
 module.exports.passwordResetSchema = Joi.object({
+    token: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.any().equal(Joi.ref('password')).required().label('Confirm password').messages({ 'any.only': 'Passwords do not match' })

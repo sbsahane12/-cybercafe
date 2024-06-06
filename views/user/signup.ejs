@@ -135,6 +135,10 @@ input[type="password"] {
     margin-bottom: 10px;
     
 }
+.highlighted {
+            color: green;
+            font-weight: bold;
+        }
 
 </style>
 <body>
@@ -158,7 +162,14 @@ input[type="password"] {
 
            <input type="file" name="avatar"  class="form-control border-orange-500 rounded" required>
    <input type="text" name="role" value="normal" class="form-control border-orange-500 rounded" disabled readonly>
-    
+   <div class="text-center mt-4 orange-500">
+    <input type="checkbox" id="termsCheckbox" required>
+    <p>
+        Please accept our 
+        <a href="/terms" id="termsLink">Terms</a> and 
+        <a href="/privacy" id="privacyLink">Privacy Policy</a>
+    </p>
+</div>
         <button class="btn text-lg items-center justify-center flex font-semibold mt-4 mx-auto orange-500 ">Sign Up</button>
         <p class="text-center mt-4 orange-500">You have an account? <a href="/user/login">Login</a></p>
 
@@ -189,6 +200,20 @@ input[type="password"] {
       }, false)
     })
 })()
+
+document.getElementById('termsCheckbox').addEventListener('change', function() {
+            var termsLink = document.getElementById('termsLink');
+            var privacyLink = document.getElementById('privacyLink');
+
+            if (this.checked) {
+                termsLink.classList.add('highlighted');
+                privacyLink.classList.add('highlighted');
+            } else {
+                termsLink.classList.remove('highlighted');
+                privacyLink.classList.remove('highlighted');
+            }
+        });
+    </script>
 </script>
 
 </body>

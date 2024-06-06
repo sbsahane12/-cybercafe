@@ -87,10 +87,15 @@ button:hover {
         <h2 class="text-lg font-semibold">Add New Service</h2>
       </div>
       <div class="grid grid-cols-1 gap-4">
+        <label for="title">Enter Title  </label>
         <input type="text" name="title" placeholder="Enter Title" class="form-control border-orange-500 rounded" required>
+        <label for="description">Enter Description</label>
         <input type="text" name="description" placeholder="Enter Description" class="form-control  rounded" required    >
+        <label for="image">Enter Image</label>
         <input type="file" name="image" class="form-control border-orange-500 rounded" required>
+        <label for="price">Enter Price</label>
         <input type="text" name="price" placeholder="Enter Price" class="form-control border-orange-500 rounded" required>
+        <label for="documentCount">Enter Document Count</label>
         <input type="text" name="documentCount" id="documentCount" placeholder="Enter Document Count" class="form-control border-orange-500 rounded" required>
         <div id="documentInputs" ></div>
         <button class="btn">Save Changes</button>
@@ -113,11 +118,17 @@ button:hover {
 
         for (let i = 0; i < count; i++) {
           const input = document.createElement('input');
+          const label = document.createElement('label');
+
+          label.textContent = `Document ${i + 1}`;
+
           input.setAttribute('name', `documents`);
           input.setAttribute('type', 'text');
           input.setAttribute('class', 'form-control mb-2 rounded');
           input.setAttribute('placeholder', `Document ${i + 1}`);
-
+          input.setAttribute('required', '');
+          
+          documentInputsContainer.appendChild(label);
           documentInputsContainer.appendChild(input);
         }
       }

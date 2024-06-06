@@ -7,7 +7,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const upload = require('../utils/multer');
 const {registerSchema, emailSchema, passwordResetSchema, loginSchema} = require('../validation/userValidation');
 
-const ensureRole = require("../middleware/roleMiddleware");
+const {ensureAuthenticated, ensureNormal, ensureAdmin} = require('../middleware/roleMiddleware');
 
 const IsValidRegister = (req, res, next) => {
     const { error } = registerSchema.validate(req.body);
@@ -50,13 +50,13 @@ const IsValidLogin = (req, res, next) => {
 }
 
 
-router.get('/profile/:id', asyncHandler(authController.profile));
-router.put('/profile/:id', upload.single('avatar'), asyncHandler(authController.updateProfileForm));
+router.get('/profile/:id', ensureAuthenticated,asyncHandler(authController.profile));
+router.put('/profile/:id', ensureAuthenticated,ensureNormal,upload.single('avatar'), asyncHandler(authController.updateProfileForm));
 
-router.get("/application/:id", asyncHandler(authController.applicationForm));
-router.put("/application/:id",upload.array('new_documents'), asyncHandler(authController.updateApplicationForm));
+router.get("/application/:id",ensureAuthenticated,ensureNormal,  asyncHandler(authController.applicationForm));
+router.put("/application/:id", ensureAuthenticated, ensureNormal, upload.array('new_documents'), asyncHandler(authController.updateApplicationForm));
   
-router.post('/signup',upload.single('avatar') , asyncHandler(authController.signup));
+router.post('/signup', upload.single('avatar') , asyncHandler(authController.signup));
 router.get('/signup', asyncHandler(authController.signupForm));
 
 router.get('/login', asyncHandler(authController.loginForm));
@@ -69,7 +69,7 @@ router.get('/forgetPassword', asyncHandler(authController.forgetPasswordForm));
 router.post('/forgetPassword', asyncHandler(authController.forgetPassword));
 
 router.get('/resetPassword', asyncHandler(authController.resetPasswordForm));
-router.post('/resetPassword',IsValidPasswordReset, asyncHandler(authController.resetPassword));
+router.post('/resetPassword', asyncHandler(authController.resetPassword));
 
 
 module.exports = router;
